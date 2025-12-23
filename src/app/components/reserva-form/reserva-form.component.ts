@@ -2,18 +2,25 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ReservasService } from '../../services/reservas.service';
 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { CommonModule } from '@angular/common';
+
 @Component({
-    selector: 'app-reserva-form',
-    imports: [ReactiveFormsModule],
-    template: `
-    <form [formGroup]="form" (ngSubmit)="submit()">
-      <input type="text" placeholder="Nombre" formControlName="nombre" />
-      <input type="number" placeholder="PAX" formControlName="pax" />
-      <input type="datetime-local" formControlName="checkin" />
-      <input type="datetime-local" formControlName="checkout" />
-      <button type="submit">Guardar</button>
-    </form>
-  `
+  selector: 'app-reserva-form',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatGridListModule,
+    CommonModule
+  ],
+  templateUrl: './reserva-form.component.html',
+  styleUrls: ['./reserva-form.component.css']
 })
 export class ReservaFormComponent {
 
@@ -22,11 +29,11 @@ export class ReservaFormComponent {
 
   form = this.fb.group({
     nombre: ['', Validators.required],
-    pax: [1, Validators.required],
+    pax: [1, [Validators.required, Validators.min(1)]],
     checkin: ['', Validators.required],
     checkout: ['', Validators.required],
     telefono: [''],
-    email: [''],
+    email: ['', Validators.email],
     observaciones: [''],
     deposito: [0],
     total: [0],
@@ -36,12 +43,15 @@ export class ReservaFormComponent {
     servicio: [''],
   });
 
-  submit = () => {
-    if (this.form.invalid) return;
+  submit = (): void => {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     this.reservasService.createReserva(this.form.value as any)
       .subscribe(res => {
         console.log('Reserva creada:', res);
       });
-  }
+  };
 }

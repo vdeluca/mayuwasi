@@ -1,0 +1,49 @@
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+  
+  .title {
+    margin-bottom: 1.5rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  /* Campos que ocupan toda la fila */
+  .full {
+    grid-column: span 2;
+  }
+  
+  .actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .full {
+      grid-column: span 1;
+    }
+  
+    .actions {
+      justify-content: center;
+    }
+  }
+  
