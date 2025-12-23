@@ -8,6 +8,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
 
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+
+
 @Component({
   selector: 'app-reserva-form',
   standalone: true,
@@ -17,7 +22,10 @@ import { CommonModule } from '@angular/common';
     MatInputModule,
     MatButtonModule,
     MatGridListModule,
-    CommonModule
+    CommonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule
   ],
   templateUrl: './reserva-form.component.html',
   styleUrls: ['./reserva-form.component.css']
@@ -39,7 +47,7 @@ export class ReservaFormComponent {
     total: [0],
     codigo_operacion: [''],
     estado: ['Reservado'],
-    espacio: [''],
+    espacio: ['3038e12f-d862-42b6-ac3b-dd7916a4935d'],
     servicio: [''],
   });
 

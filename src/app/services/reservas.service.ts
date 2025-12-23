@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reserva } from '../interfaces/reserva';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +11,10 @@ export class ReservasService {
 
   private http = inject(HttpClient);
 
-  // En dev apuntamos al backend local de Django:
-  private baseUrl = 'http://127.0.0.1:8000';
+  private baseUrl = environment.url_base_api + "mayuwasi";
 
   createReserva = (payload: Reserva): Observable<Reserva> =>
-    this.http.post<Reserva>(`${this.baseUrl}/reservas/`, payload);
+    this.http.post<Reserva>(`${this.baseUrl}/reserva/create/`, payload);
 
   getReserva = (uuid: string): Observable<Reserva> =>
     this.http.get<Reserva>(`${this.baseUrl}/reserva/${uuid}/`);
