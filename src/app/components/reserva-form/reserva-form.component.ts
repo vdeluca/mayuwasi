@@ -3,10 +3,9 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ReservasService } from '../../services/reservas.service';
 
 @Component({
-  selector: 'app-reserva-form',
-  standalone: true,
-  imports: [ReactiveFormsModule],
-  template: `
+    selector: 'app-reserva-form',
+    imports: [ReactiveFormsModule],
+    template: `
     <form [formGroup]="form" (ngSubmit)="submit()">
       <input type="text" placeholder="Nombre" formControlName="nombre" />
       <input type="number" placeholder="PAX" formControlName="pax" />
