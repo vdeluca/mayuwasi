@@ -1,0 +1,34 @@
+<div class="container">
+
+    <h2 class="title">Nuestros espacios</h2>
+  
+    <div *ngIf="loading" class="loading">
+      Cargando espacios...
+    </div>
+  
+    <div class="grid" *ngIf="!loading">
+  
+      <mat-card class="espacio-card" *ngFor="let espacio of espacios">
+  
+        <mat-card-header>
+          <mat-card-title>{{ espacio.nombre }}</mat-card-title>
+          <mat-card-subtitle>
+            PAX: {{ espacio.pax }}
+          </mat-card-subtitle>
+        </mat-card-header>
+  
+        <mat-card-actions align="end">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="reservar(espacio)">
+            Reservar
+          </button>
+        </mat-card-actions>
+  
+      </mat-card>
+  
+    </div>
+  
+  </div>
+  
