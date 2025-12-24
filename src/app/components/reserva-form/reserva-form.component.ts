@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ReservasService } from '../../services/reservas.service';
 
@@ -12,6 +12,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 
+import { ActivatedRoute } from '@angular/router';
+
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+
+import { EspaciosService } from '../../services/espacios.service';
+import { Espacio } from '../../interfaces/espacio';
 
 @Component({
   selector: 'app-reserva-form',
@@ -25,15 +32,22 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatIconModule
+    MatIconModule,
+    MatSnackBarModule,
   ],
   templateUrl: './reserva-form.component.html',
   styleUrls: ['./reserva-form.component.css']
 })
-export class ReservaFormComponent {
-
+export class ReservaFormComponent implements OnInit {
+  
   private fb = inject(FormBuilder);
   private reservasService = inject(ReservasService);
+  private route = inject(ActivatedRoute);
+  private snackBar = inject(MatSnackBar);
+  private router = inject(Router);
+  private espaciosService = inject(EspaciosService);
+
+  espacioSeleccionado?: Espacio;
 
   form = this.fb.group({
     nombre: ['', Validators.required],
@@ -47,19 +61,61 @@ export class ReservaFormComponent {
     total: [0],
     codigo_operacion: [''],
     estado: ['Reservado'],
-    espacio: ['3038e12f-d862-42b6-ac3b-dd7916a4935d'],
+    espacio: [''],
     servicio: [''],
   });
+
+  ngOnInit(): void {
+    this.route.queryParamMap.subscribe(params => {
+      const espacioUuid = params.get('espacio');
+  
+      if (!espacioUuid) return;
+  
+      // setear el form
+      this.form.patchValue({ espacio: espacioUuid });
+  
+      console.log('Espacio UUID en el form:', espacioUuid);
+      // buscar el espacio para mostrar su nombre
+      this.espaciosService.getEspacio(espacioUuid)
+        .subscribe(espacio => {
+          this.espacioSeleccionado = espacio;
+          console.log(this.espacioSeleccionado);
+        });
+    });
+  }
 
   submit = (): void => {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-
+  
     this.reservasService.createReserva(this.form.value as any)
-      .subscribe(res => {
-        console.log('Reserva creada:', res);
+      .subscribe({
+        next: () => {
+          this.snackBar.open(
+            '✅ Reserva realizada con éxito',
+            'Ver espacios',
+            {
+              duration: 3000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top'
+            }
+          );
+  
+          // redirigir luego de un pequeño delay
+          setTimeout(() => {
+            this.router.navigate(['/espacios']);
+          }, 3000);
+        },
+        error: () => {
+          this.snackBar.open(
+            '❌ Error al crear la reserva',
+            'Cerrar',
+            { duration: 4000 }
+          );
+        }
       });
   };
+  
 }

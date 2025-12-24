@@ -15,4 +15,7 @@ export class EspaciosService {
     return this.http.get<Espacio[]>(`${this.baseUrl}/espacios/`);
   }
   
+  getEspacio(uuid: string): Observable<Espacio> {
+    return this.http.get<Espacio>(`${this.baseUrl}/espacio/${uuid}/`);
+  }
 }

@@ -1,7 +1,11 @@
 <div class="container">
 
-    <h2 class="title">Nueva reserva</h2>
-  
+    <h2 class="title">
+      @if (espacioSeleccionado) {
+        {{ espacioSeleccionado.nombre }}
+      }
+    </h2>  
+
     <form [formGroup]="form" (ngSubmit)="submit()" class="form">
   
       <div class="grid">
