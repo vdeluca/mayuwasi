@@ -50,13 +50,11 @@ export class DisponibilidadCalendarComponent {
     .subscribe(espacio => {
       this.espacioSeleccionado = espacio;
     });
-
   }
 
   /** Deshabilita días ocupados */
   dateFilter = (date: Date | null): boolean => {
     if (!date) return false;
-
     return !this.reservas.some(r =>
       date >= this.stripTime(r.checkin) &&
       date < this.stripTime(r.checkout)
@@ -69,7 +67,6 @@ export class DisponibilidadCalendarComponent {
       date >= this.stripTime(r.checkin) &&
       date < this.stripTime(r.checkout)
     );
-
     return ocupado ? 'ocupado' : '';
   };
 

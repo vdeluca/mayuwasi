@@ -28,16 +28,21 @@
   
         <mat-form-field appearance="outline">
           <mat-label>Check-in</mat-label>
-          <input matInput [matDatepicker]="pickerCheckin" formControlName="checkin">
+          <input matInput [matDatepicker]="pickerCheckin" 
+            [matDatepickerFilter]="dateFilter"
+            formControlName="checkin">
           <mat-datepicker-toggle matSuffix [for]="pickerCheckin"></mat-datepicker-toggle>
-          <mat-datepicker #pickerCheckin></mat-datepicker>
+          <mat-datepicker #pickerCheckin [dateClass]="dateClass"></mat-datepicker>
         </mat-form-field>
         
         <mat-form-field appearance="outline">
           <mat-label>Check-out</mat-label>
-          <input matInput [matDatepicker]="pickerCheckout" formControlName="checkout">
+          <input matInput 
+            [matDatepicker]="pickerCheckout" 
+            [matDatepickerFilter]="dateFilter"
+            formControlName="checkout">
           <mat-datepicker-toggle matSuffix [for]="pickerCheckout"></mat-datepicker-toggle>
-          <mat-datepicker #pickerCheckout></mat-datepicker>
+          <mat-datepicker #pickerCheckout [dateClass]="dateClass"></mat-datepicker>
         </mat-form-field>
           
         <mat-form-field appearance="outline">

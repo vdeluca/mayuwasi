@@ -45,9 +45,8 @@ export class EspaciosComponent implements OnInit {
 
   disponibilidad = (espacio: Espacio): void => {
     this.router.navigate([
-      'espacios',
-      espacio.uuid,
-      'disponibilidad'
+      'disponibilidad',
+      espacio.uuid
     ]);
   };
 }

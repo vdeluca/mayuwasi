@@ -46,6 +46,7 @@ export class ReservaFormComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
   private router = inject(Router);
   private espaciosService = inject(EspaciosService);
+  reservas: { checkin: Date; checkout: Date }[] = [];
 
   espacioSeleccionado?: Espacio;
 
@@ -66,11 +67,11 @@ export class ReservaFormComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    // Get param from route
+    const espacioUuid = this.route.snapshot.paramMap.get('espacioUuid')!;
+    if (!espacioUuid) return;
+
     this.route.queryParamMap.subscribe(params => {
-      const espacioUuid = this.route.snapshot.paramMap.get('espacioUuid')!;
-  
-      if (!espacioUuid) return;
-  
       // setear el form
       this.form.patchValue({ espacio: espacioUuid });
   
@@ -81,6 +82,17 @@ export class ReservaFormComponent implements OnInit {
           console.log(this.espacioSeleccionado);
         });
     });
+
+    // Recupera todas las reservas del espacio
+    this.reservasService
+      .getReservasByEspacio(espacioUuid)
+      .subscribe(data => {
+        this.reservas = data.map(r => ({
+        checkin: new Date(r.checkin),
+        checkout: new Date(r.checkout),
+      }));
+    });
+  
   }
 
   submit = (): void => {
@@ -101,7 +113,6 @@ export class ReservaFormComponent implements OnInit {
               verticalPosition: 'top'
             }
           );
-  
           // redirigir luego de un pequeño delay
           setTimeout(() => {
             this.router.navigate(['/espacios']);
@@ -121,4 +132,28 @@ export class ReservaFormComponent implements OnInit {
     this.router.navigate(['/']);
   }
   
+  /** Deshabilita días ocupados */
+  dateFilter = (date: Date | null): boolean => {
+    if (!date) return false;
+
+    return !this.reservas.some(r =>
+      date >= this.stripTime(r.checkin) &&
+      date < this.stripTime(r.checkout)
+    );
+  };
+
+  /** Marca visualmente días ocupados */
+  dateClass = (date: Date): string => {
+    const ocupado = this.reservas.some(r =>
+      date >= this.stripTime(r.checkin) &&
+      date < this.stripTime(r.checkout)
+    );
+
+    return ocupado ? 'ocupado' : '';
+  };
+  
+  private stripTime(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
 }

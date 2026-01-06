@@ -47,3 +47,18 @@
     }
   }
   
+
+/* Día ocupado */
+::ng-deep .mat-calendar-body-cell.ocupado
+  .mat-calendar-body-cell-content {
+  background-color: #d32f2f;
+  color: white;
+  border-radius: 50%;
+}
+
+/* Hover sobre ocupado */
+::ng-deep .mat-calendar-body-cell.ocupado:hover
+  .mat-calendar-body-cell-content {
+  background-color: #b71c1c;
+}
+  
