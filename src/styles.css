@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background-color: #f3efe8;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.container {
+    max-width: 960px;
+    margin: 24px auto;
+    padding: 24px;
+    background-color: #ebe6dc;
+    border-radius: 16px;
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  mat-card {
+    background-color: #f1ede5;
+    border-radius: 16px;
+  }
+
+  

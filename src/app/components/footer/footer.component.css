@@ -1,0 +1,31 @@
+.footer {
+    background-color: #2f5d3a; 
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 10px 0px 0px 0px;
+  }
+  
+  .icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #3f7a4a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  
+    svg {
+      width: 18px;
+      height: 18px;
+      fill: #eaf2ec;
+    }
+  
+    &:hover {
+      transform: translateY(-2px);
+      background-color: #4f8f5c;
+    }
+  }
+  

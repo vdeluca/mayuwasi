@@ -20,6 +20,8 @@ import { Router } from '@angular/router';
 import { EspaciosService } from '../../services/espacios.service';
 import { Espacio } from '../../interfaces/espacio';
 
+import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-reserva-form',
   standalone: true,
@@ -47,6 +49,8 @@ export class ReservaFormComponent implements OnInit {
   private router = inject(Router);
   private espaciosService = inject(EspaciosService);
   reservas: { checkin: Date; checkout: Date }[] = [];
+
+  apiUrl = environment.url_base_api;
 
   espacioSeleccionado?: Espacio;
 
