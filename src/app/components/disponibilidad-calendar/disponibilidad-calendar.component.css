@@ -21,3 +21,54 @@
     background-color: #b71c1c;
   }
   
+  .calendar-container {
+    background: #f2ede6;
+    padding: 16px;
+    border-radius: 14px;
+  }
+  
+  .calendar-title {
+    margin-bottom: 8px;
+    color: #3f5f4f;
+    font-weight: 500;
+  }
+  
+  mat-calendar {
+    width: 100%;
+    background: transparent;
+  }
+
+  .imagenes-carousel {
+    margin: 16px 0 24px 0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .carousel-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .carousel-image {
+    height: 260px;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  .actions button {
+    flex: 1;
+  }
+  
+  @media (max-width: 600px) {
+    .actions {
+      flex-direction: column;
+    }
+  }
+  

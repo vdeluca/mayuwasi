@@ -1,21 +1,75 @@
-<div class="calendar-container">
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Disponibilidad</mat-label>
-  
-      <input
-        matInput
-        [matDatepicker]="picker"
-        [matDatepickerFilter]="dateFilter"
-        placeholder="Seleccionar fecha"
-        readonly
+<div class="calendar-container" *ngIf="reservasCargadas">
+
+  <h2 class="espacio-title">
+    {{ espacioSeleccionado?.nombre }}
+  </h2>
+
+  <p class="espacio-descripcion" *ngIf="espacioSeleccionado?.descripcion">
+    {{ espacioSeleccionado?.descripcion }}
+  </p>
+
+  <mat-tab-group
+  class="imagenes-carousel"
+  animationDuration="400ms"
+  mat-stretch-tabs="false">
+
+ @if (espacioSeleccionado?.imagen1) {
+  <mat-tab>
+    <ng-template matTabContent>
+      <img
+        [src]="apiUrl + espacioSeleccionado?.imagen1"
+        alt="Imagen del espacio"
+        class="carousel-image"
       />
-  
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  
-      <mat-datepicker
-        #picker
-        [dateClass]="dateClass">
-      </mat-datepicker>
-    </mat-form-field>
+    </ng-template>
+  </mat-tab>
+}
+@if (espacioSeleccionado?.imagen2) {
+  <mat-tab>
+    <ng-template matTabContent>
+      <img
+        [src]="apiUrl + espacioSeleccionado?.imagen2"
+        alt="Imagen del espacio"
+        class="carousel-image"
+      />
+    </ng-template>
+  </mat-tab>
+}
+@if (espacioSeleccionado?.imagen3) {
+  <mat-tab>
+    <ng-template matTabContent>
+      <img
+        [src]="apiUrl + espacioSeleccionado?.imagen3"
+        alt="Imagen del espacio"
+        class="carousel-image"
+      />
+    </ng-template>
+  </mat-tab>
+}
+</mat-tab-group>
+
+<h2>Disponibilidad</h2>
+<mat-calendar
+  [dateFilter]="dateFilter"
+  [dateClass]="dateClass">
+</mat-calendar>
+
+<div class="actions">
+
+  <button
+    mat-stroked-button
+    color="primary"
+    (click)="volver()">
+    Volver
+  </button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="reservar()">
+    Reservar
+  </button>
+
 </div>
-  
+
+</div>
