@@ -1,6 +1,6 @@
 <div class="container">
 
-    <h2 class="title">Nuestros espacios</h2>
+    <h2 class="title">Bungalows</h2>
   
     <div *ngIf="loading" class="loading">
       Cargando espacios...
@@ -9,7 +9,13 @@
     <div class="grid" *ngIf="!loading">
   
       <mat-card class="espacio-card" *ngFor="let espacio of espacios">
-  
+        <img
+          mat-card-image
+          *ngIf="espacio.imagen1"
+          [src]="apiUrl + espacio.imagen1"
+          alt="{{ espacio.nombre }}"
+        />
+
         <mat-card-header>
           <mat-card-title>{{ espacio.nombre }}</mat-card-title>
           <mat-card-subtitle>

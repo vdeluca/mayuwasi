@@ -8,13 +8,15 @@ import { Espacio } from '../../interfaces/espacio';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 
+import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-espacios',
   standalone: true,
   imports: [
     CommonModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   templateUrl: './espacios.component.html',
   styleUrl: './espacios.component.css',
@@ -24,6 +26,8 @@ export class EspaciosComponent implements OnInit {
   private espaciosService = inject(EspaciosService);
   private router = inject(Router);
 
+  apiUrl = environment.url_base_api;
+
   espacios: Espacio[] = [];
   loading = true;
 
@@ -32,6 +36,7 @@ export class EspaciosComponent implements OnInit {
       next: (data) => {
         this.espacios = data;
         this.loading = false;
+        console.log(data);
       },
       error: () => {
         this.loading = false;
