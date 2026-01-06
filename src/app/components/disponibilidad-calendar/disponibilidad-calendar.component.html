@@ -1,0 +1,21 @@
+<div class="calendar-container">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Disponibilidad</mat-label>
+  
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [matDatepickerFilter]="dateFilter"
+        placeholder="Seleccionar fecha"
+        readonly
+      />
+  
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  
+      <mat-datepicker
+        #picker
+        [dateClass]="dateClass">
+      </mat-datepicker>
+    </mat-form-field>
+  </div>
+  

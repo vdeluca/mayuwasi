@@ -24,4 +24,10 @@ export class ReservasService {
 
   deleteReserva = (uuid: string): Observable<any> =>
     this.http.delete(`${this.baseUrl}/reserva/${uuid}/delete/`);
+
+  getReservasByEspacio = (espacioUuid: string) =>
+    this.http.get<any[]>(
+      `${this.baseUrl}/get-reservas-by-espacio/${espacioUuid}/`
+    );
+  
 }

@@ -8,8 +8,8 @@ export const routes: Routes = [
     component: EspaciosComponent
   },
   {
-    path: 'reservar',
-    component: ReservaFormComponent
+    path: 'reservar/:espacioUuid',
+    component: ReservaFormComponent,
   },
   {
     path: '**',
