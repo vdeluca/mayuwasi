@@ -67,14 +67,13 @@ export class ReservaFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
-      const espacioUuid = params.get('espacio');
+      const espacioUuid = this.route.snapshot.paramMap.get('espacioUuid')!;
   
       if (!espacioUuid) return;
   
       // setear el form
       this.form.patchValue({ espacio: espacioUuid });
   
-      console.log('Espacio UUID en el form:', espacioUuid);
       // buscar el espacio para mostrar su nombre
       this.espaciosService.getEspacio(espacioUuid)
         .subscribe(espacio => {
@@ -117,5 +116,9 @@ export class ReservaFormComponent implements OnInit {
         }
       });
   };
+
+  goBack = (): void => {
+    this.router.navigate(['/']);
+  }
   
 }

@@ -7,6 +7,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 import { ReservasService } from '../../services/reservas.service';
+import { ActivatedRoute } from '@angular/router';
+import { EspaciosService } from '../../services/espacios.service';
+import { Espacio } from '../../interfaces/espacio';
 
 @Component({
   selector: 'app-disponibilidad-calendar',
@@ -21,21 +24,33 @@ import { ReservasService } from '../../services/reservas.service';
   styleUrl: './disponibilidad-calendar.component.css',
 })
 export class DisponibilidadCalendarComponent {
-  @Input({ required: true }) espacioUuid!: string;
-
   private reservasService = inject(ReservasService);
 
   reservas: { checkin: Date; checkout: Date }[] = [];
 
+  private route = inject(ActivatedRoute);
+  espacioSeleccionado?: Espacio;
+  espaciosService: EspaciosService = inject(EspaciosService);
+
   ngOnInit(): void {
+    const espacioUuid = this.route.snapshot.paramMap.get('espacioUuid')!;
+
+    // Recupera todas las reservas del espacio
     this.reservasService
-      .getReservasByEspacio(this.espacioUuid)
+      .getReservasByEspacio(espacioUuid)
       .subscribe(data => {
         this.reservas = data.map(r => ({
           checkin: new Date(r.checkin),
           checkout: new Date(r.checkout),
         }));
-      });
+    });
+
+    // buscar el espacio para mostrar su nombre
+    this.espaciosService.getEspacio(espacioUuid)
+    .subscribe(espacio => {
+      this.espacioSeleccionado = espacio;
+    });
+
   }
 
   /** Deshabilita días ocupados */
