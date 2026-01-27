@@ -104,6 +104,30 @@
 
     </div>
 
+    @if (cotizacion) {
+      <section class="resumen">
+        <h3>Resumen de la estadía</h3>
+    
+        <div class="linea" *ngFor="let item of cotizacion.detalle">
+          <span>
+            {{ item.cantidad }}
+            {{ item.tipo === 'DIA' ? 'día(s)' : 'noche(s)' }}
+          </span>
+          <span>
+            {{ item.precio_unitario | currency:'ARS' }}
+          </span>
+          <strong>
+            {{ item.subtotal | currency:'ARS' }}
+          </strong>
+        </div>
+    
+        <div class="total">
+          Total:
+          <strong>{{ cotizacion.total | currency:'ARS' }}</strong>
+        </div>
+      </section>
+    }    
+
     <div class="actions">
       <button mat-raised-button type="button" (click)="goBack()">
         Volver

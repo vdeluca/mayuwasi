@@ -22,6 +22,11 @@ import { Espacio } from '../../interfaces/espacio';
 
 import { environment } from '../../../environments/environment';
 
+import { CotizacionService } from '../../services/cotizacion.service';
+import { CotizacionReserva } from '../../interfaces/cotizacion';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+
+
 @Component({
   selector: 'app-reserva-form',
   standalone: true,
@@ -50,8 +55,11 @@ export class ReservaFormComponent implements OnInit {
   private espaciosService = inject(EspaciosService);
   reservas: { checkin: Date; checkout: Date }[] = [];
 
+  private cotizacionService = inject(CotizacionService);
+  cotizacion?: CotizacionReserva;
+  cotizando = false;
   apiUrl = environment.url_base_api;
-
+  
   espacioSeleccionado?: Espacio;
 
   form = this.fb.group({
@@ -74,7 +82,50 @@ export class ReservaFormComponent implements OnInit {
     // Get param from route
     const espacioUuid = this.route.snapshot.paramMap.get('espacioUuid')!;
     if (!espacioUuid) return;
+    this.form.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+      )
+      .subscribe(values => {
+        const { checkin, checkout, pax, espacio } = values;
 
+        if (!checkin || !checkout || !pax || !espacio) {
+          this.cotizacion = undefined;
+          return;
+        }
+
+        const payload = {
+          espacio,
+          pax,
+          checkin: this.formatDate(checkin),
+          checkout: this.formatDate(checkout),
+        };
+
+        this.cotizando = true;
+
+        this.cotizacionService.cotizarReserva(payload)
+          .subscribe({
+            next: cotizacion => {
+              this.cotizacion = cotizacion;
+              this.form.patchValue(
+                {
+                  total: cotizacion.total,
+                },
+                { emitEvent: false }
+              );
+            },
+            error: (error) => {
+              this.cotizacion = undefined;
+              console.log(error);
+            },
+            complete: () => {
+              this.cotizando = false;
+            }
+        });
+      }
+    );
+      
     this.route.queryParamMap.subscribe(params => {
       // setear el form
       this.form.patchValue({ espacio: espacioUuid });
@@ -160,4 +211,12 @@ export class ReservaFormComponent implements OnInit {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
+  private formatDate(value: Date | string): string {
+    if (value instanceof Date) {
+      return value.toISOString().split('T')[0];
+    }
+  
+    // fallback: string
+    return new Date(value).toISOString().split('T')[0];
+  }
 }

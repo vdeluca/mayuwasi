@@ -1,84 +1,32 @@
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 1.5rem;
-  }
-  
-  .title {
-    margin-bottom: 1.5rem;
-    font-size: 1.6rem;
-    font-weight: 500;
-  }
-  
-  .form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-  
-  /* Campos que ocupan toda la fila */
-  .full {
-    grid-column: span 2;
-  }
-  
-  .actions {
-    margin-top: 2rem;
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .grid {
-      grid-template-columns: 1fr;
-    }
-  
-    .full {
-      grid-column: span 1;
-    }
-  
-    .actions {
-      justify-content: center;
-    }
-  }
-  
-
-/* Día ocupado */
-::ng-deep .mat-calendar-body-cell.ocupado
-  .mat-calendar-body-cell-content {
-  background-color: #d32f2f;
-  color: white;
-  border-radius: 50%;
-}
-
-/* Hover sobre ocupado */
-::ng-deep .mat-calendar-body-cell.ocupado:hover
-  .mat-calendar-body-cell-content {
-  background-color: #b71c1c;
-}
-  
+/* =========================
+   LAYOUT GENERAL
+========================= */
 .container {
   max-width: 960px;
-  margin: auto;
-  padding: 16px;
+  margin: 0 auto;
+  padding: 24px 16px;
 }
 
-/* HERO */
+.title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+  color: #222;
+}
+
+/* =========================
+   HERO
+========================= */
 .espacio-hero {
   position: relative;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .hero-image {
   width: 100%;
-  height: 320px;
+  height: 340px;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 16px;
 }
 
 .hero-info {
@@ -86,46 +34,56 @@
   bottom: 16px;
   left: 16px;
   background: rgba(0, 0, 0, 0.55);
-  color: white;
-  padding: 12px 16px;
-  border-radius: 8px;
+  backdrop-filter: blur(4px);
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 12px;
 }
 
-.title {
+.hero-info .title {
   margin: 0;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
+  color: #fff;
 }
 
 .pax {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   opacity: 0.9;
 }
 
-/* DESCRIPCIÓN */
+/* =========================
+   DESCRIPCIÓN
+========================= */
 .descripcion {
-  margin: 16px 0 24px;
+  margin: 20px 0 28px;
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.6;
   color: #444;
 }
 
-/* GALERÍA */
+/* =========================
+   GALERÍA
+========================= */
 .galeria {
   display: flex;
   gap: 12px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .galeria img {
   flex: 1;
-  height: 160px;
+  height: 170px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 12px;
 }
 
-/* FORM */
+/* =========================
+   FORMULARIO
+========================= */
 .form {
-  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .grid {
@@ -141,10 +99,28 @@
 .actions {
   display: flex;
   justify-content: space-between;
-  margin-top: 24px;
+  align-items: center;
+  margin-top: 32px;
 }
 
-/* MOBILE */
+/* =========================
+   CALENDARIO OCUPADO
+========================= */
+::ng-deep .mat-calendar-body-cell.ocupado
+  .mat-calendar-body-cell-content {
+  background-color: #d32f2f;
+  color: white;
+  border-radius: 50%;
+}
+
+::ng-deep .mat-calendar-body-cell.ocupado:hover
+  .mat-calendar-body-cell-content {
+  background-color: #b71c1c;
+}
+
+/* =========================
+   MOBILE
+========================= */
 @media (max-width: 600px) {
   .hero-image {
     height: 220px;
@@ -152,9 +128,18 @@
 
   .hero-info {
     position: static;
-    margin-top: 8px;
+    margin-top: 12px;
     background: none;
     color: #222;
     padding: 0;
+  }
+
+  .hero-info .title {
+    color: #222;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 12px;
   }
 }
