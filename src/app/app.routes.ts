@@ -7,7 +7,7 @@ import { DisponibilidadComponent } from './components/disponibilidad/disponibili
 export const routes: Routes = [
   {
     path: '',
-    component: EspaciosComponent
+    component: DisponibilidadComponent
   },
   {
     path: 'disponibilidad/:espacioUuid',

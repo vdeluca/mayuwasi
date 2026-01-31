@@ -1,11 +1,11 @@
 <div class="calendar-container" *ngIf="reservasCargadas">
 
   <h2 class="espacio-title">
-    {{ espacioSeleccionado?.nombre }}
+    {{ espacioSeleccionado?.titulo }}
   </h2>
 
-  <p class="espacio-descripcion" *ngIf="espacioSeleccionado?.descripcion">
-    {{ espacioSeleccionado?.descripcion }}
+  <p class="espacio-descripcion" *ngIf="espacioSeleccionado?.subtitulo">
+    {{ espacioSeleccionado?.tipo_espacio?.descripcion }}
   </p>
 
   <mat-tab-group
