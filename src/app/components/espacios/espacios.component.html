@@ -13,13 +13,13 @@
           mat-card-image
           *ngIf="espacio.imagen1"
           [src]="apiUrl + espacio.imagen1"
-          alt="{{ espacio.nombre }}"
+          alt="{{ espacio.titulo }}"
         />
 
         <mat-card-header>
-          <mat-card-title>{{ espacio.nombre }}</mat-card-title>
+          <mat-card-title>{{ espacio.titulo }}</mat-card-title>
           <mat-card-subtitle>
-            PAX: {{ espacio.pax }}
+            PAX: {{ espacio.tipo_espacio.capacidad }}
           </mat-card-subtitle>
         </mat-card-header>
   

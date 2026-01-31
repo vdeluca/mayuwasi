@@ -1,28 +1,82 @@
-<div class="calendar-container">
-  
-  <h2>Disponibilidad</h2>
-  <h3>Periodo</h3>
-  <mat-calendar></mat-calendar>
-  <h3>Parsonas</h3>
-  <mat-form-field appearance="fill">
-    <mat-label>Personas</mat-label>
-    <input matInput type="number" min="1" max="5" [(ngModel)]="personas" />
-  </mat-form-field>
-  
-  <div class="actions">
-    <button
-      mat-stroked-button
-      color="primary"
-      (click)="volver()">
-      Volver
-    </button>  
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="reservar()">
-      Reservar
-    </button>  
-  </div>
+<div class="container my-4">
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    class="card shadow-sm p-3 p-md-4"
+  >
+
+    <h3 class="mb-3">Disponibilidad</h3>
+
+    <div class="row g-3">
+
+      <!-- CHECK-IN -->
+      <div class="col-12 col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Check-in</mat-label>
+          <input
+            matInput
+            [matDatepicker]="pickerCheckin"
+            formControlName="checkin"
+          />
+          <mat-datepicker-toggle matSuffix [for]="pickerCheckin" />
+          <mat-datepicker #pickerCheckin />
+        </mat-form-field>
+      </div>
+
+      <!-- CHECK-OUT -->
+      <div class="col-12 col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Check-out</mat-label>
+          <input
+            matInput
+            [matDatepicker]="pickerCheckout"
+            formControlName="checkout"
+          />
+          <mat-datepicker-toggle matSuffix [for]="pickerCheckout" />
+          <mat-datepicker #pickerCheckout />
+        </mat-form-field>
+      </div>
+
+      <!-- PAX -->
+      <div class="col-12 col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Personas</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            [max]="capacidadMaxima"
+            formControlName="pax"
+          />
+          <mat-hint>
+            Máx {{ capacidadMaxima }} personas
+          </mat-hint>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="d-flex justify-content-between align-items-center mt-4">
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="volver()"
+      >
+        Volver
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="form.invalid"
+      >
+        Consultar disponibilidad
+      </button>
+    </div>
+
+  </form>
+
 </div>
-  
-  

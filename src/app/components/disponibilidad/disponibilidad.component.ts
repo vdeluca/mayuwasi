@@ -1,65 +1,61 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
-
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatFormField, MatLabel } from "@angular/material/form-field";
-import { FormsModule } from "@angular/forms";
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { environment } from '../../../environments/environment';
-import { Espacio } from '../../interfaces/espacio';
-
 
 @Component({
   selector: 'app-disponibilidad',
   imports: [
-    MatInputModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
+    MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatNativeDateModule,
-    MatFormField,
-    MatIconModule, 
-    MatLabel, 
-    FormsModule,
-    CommonModule
+    CommonModule,
+    MatNativeDateModule
   ],
   templateUrl: './disponibilidad.component.html',
   styleUrl: './disponibilidad.component.css',
 })
-export class DisponibilidadComponent {
-  private fb = inject(FormBuilder);
-  private route = inject(ActivatedRoute);
-  private snackBar = inject(MatSnackBar);
-  private router = inject(Router);
-  reservas: { checkin: Date; checkout: Date }[] = [];
+export class DisponibilidadComponent implements OnInit {
 
-  cotizando = false;
-  apiUrl = environment.url_base_api;
-  
-  espacioSeleccionado?: Espacio;
+  form!: FormGroup;
 
-  form = this.fb.group({
-    pax: [1, [Validators.required, Validators.min(1)]],
-    checkin: ['', Validators.required],
-    checkout: ['', Validators.required],
-  });
-  
-  personas: number = 2;
+  capacidadMaxima = 5; // podés setearlo desde espacioSeleccionado
 
+  constructor(private fb: FormBuilder) {}
 
-
-  volver() {
-    window.history.back();
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      checkin: [null, Validators.required],
+      checkout: [null, Validators.required],
+      pax: [1, [Validators.required, Validators.min(1)]],
+    });
   }
-  reservar() {
-    alert(`Reservando para ${this.personas} personas.`);
+
+  submit(): void {
+    if (this.form.invalid) return;
+
+    const request = {
+      checkin: this.form.value.checkin,
+      checkout: this.form.value.checkout,
+      pax: this.form.value.pax,
+    };
+
+    console.log('Request disponibilidad:', request);
+
+    // 👉 acá llamás al backend
   }
+
+  volver(): void {
+    // navegación / step atrás
+  }
+
 }
+
+
+

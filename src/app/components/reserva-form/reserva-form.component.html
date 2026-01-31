@@ -9,12 +9,12 @@
         *ngIf="espacioSeleccionado.imagen1"
         class="hero-image"
         [src]="apiUrl + espacioSeleccionado.imagen1"
-        alt="{{ espacioSeleccionado.nombre }}"
+        alt="{{ espacioSeleccionado.titulo }}"
       />
 
       <div class="hero-info">
-        <h2 class="title">{{ espacioSeleccionado.nombre }}</h2>
-        <span class="pax">Capacidad: {{ espacioSeleccionado.pax }} personas</span>
+        <h2 class="title">{{ espacioSeleccionado.titulo }}</h2>
+        <span class="pax">Capacidad: {{ espacioSeleccionado.tipo_espacio.capacidad }} personas</span>
       </div>
 
     </section>
@@ -22,9 +22,9 @@
     <!-- DESCRIPCIÓN -->
     <section
       class="descripcion"
-      *ngIf="espacioSeleccionado.descripcion"
+      *ngIf="espacioSeleccionado.tipo_espacio.descripcion"
     >
-      {{ espacioSeleccionado.descripcion }}
+      {{ espacioSeleccionado.tipo_espacio.descripcion }}
     </section>
 
     <!-- GALERÍA SIMPLE -->
