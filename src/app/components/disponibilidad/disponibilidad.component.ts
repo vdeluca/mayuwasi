@@ -7,6 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DisponibilidadService } from '../../services/disponibilidad.service';
+import { agruparPorTipoEspacio } from '../../interfaces/espacio'
 
 
 @Component({
@@ -29,6 +30,8 @@ export class DisponibilidadComponent implements OnInit {
 
   capacidadMaxima = 5; // podés setearlo desde espacioSeleccionado
 
+  tiposAgrupados: any[] = []; // acá van los resultados agrupados
+
   constructor(private fb: FormBuilder, 
     private dispobilidadService: DisponibilidadService) {}
 
@@ -47,7 +50,6 @@ export class DisponibilidadComponent implements OnInit {
     const checkout: Date = this.form.value.checkout;
     const pax: number = this.form.value.pax;
   
-    console.log(this.toISODate(checkin));
     this.dispobilidadService
       .getDisponibilidadCabanas(
         this.toISODate(checkin),
@@ -58,7 +60,8 @@ export class DisponibilidadComponent implements OnInit {
         next: (espacios) => {
           console.log('Cabañas disponibles:', espacios);
           // acá luego:
-          // this.espaciosDisponibles = espacios;
+          this.tiposAgrupados = agruparPorTipoEspacio(espacios);
+          console.log('Tipos agrupados:', this.tiposAgrupados);
         },
         error: (err) => {
           console.error('Error consultando disponibilidad', err);
