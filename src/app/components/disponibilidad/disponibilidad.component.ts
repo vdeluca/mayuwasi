@@ -6,6 +6,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { DisponibilidadService } from '../../services/disponibilidad.service';
+
 
 @Component({
   selector: 'app-disponibilidad',
@@ -27,7 +29,8 @@ export class DisponibilidadComponent implements OnInit {
 
   capacidadMaxima = 5; // podés setearlo desde espacioSeleccionado
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, 
+    private dispobilidadService: DisponibilidadService) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -39,22 +42,39 @@ export class DisponibilidadComponent implements OnInit {
 
   submit(): void {
     if (this.form.invalid) return;
-
-    const request = {
-      checkin: this.form.value.checkin,
-      checkout: this.form.value.checkout,
-      pax: this.form.value.pax,
-    };
-
-    console.log('Request disponibilidad:', request);
-
-    // 👉 acá llamás al backend
+  
+    const checkin: Date = this.form.value.checkin;
+    const checkout: Date = this.form.value.checkout;
+    const pax: number = this.form.value.pax;
+  
+    console.log(this.toISODate(checkin));
+    this.dispobilidadService
+      .getDisponibilidadCabanas(
+        this.toISODate(checkin),
+        this.toISODate(checkout),
+        pax
+      )
+      .subscribe({
+        next: (espacios) => {
+          console.log('Cabañas disponibles:', espacios);
+          // acá luego:
+          // this.espaciosDisponibles = espacios;
+        },
+        error: (err) => {
+          console.error('Error consultando disponibilidad', err);
+        }
+      });
   }
-
+  
   volver(): void {
     // navegación / step atrás
   }
 
+
+  private toISODate(date: Date): string {
+    return date.toISOString().split('T')[0];
+  }
+  
 }
 
 
