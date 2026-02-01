@@ -1,25 +1,42 @@
 <div class="tipos-grid">
-  <div *ngFor="let tipo of tipos" class="tipo-card">
+  <mat-card
+    *ngFor="let tipo of tipos"
+    class="tipo-card"
+    appearance="outlined"
+  >
 
-    <div class="tipo-header">
-      <h3>{{ tipo.definicion }}</h3>
+    <mat-card-header>
+      <mat-card-title>{{ tipo.definicion }}</mat-card-title>
+      <mat-card-subtitle>{{ tipo.subtitulo }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="imagen-wrapper">
+      <img
+        [src]="url_base_api + tipo.imagen_portada"
+        alt="{{ tipo.definicion }}"
+      />
+    </mat-card-content>
+
+    <mat-card-content>
+      <p class="descripcion">
+        {{ tipo.descripcion }}
+      </p>
+
       <span class="badge">
         {{ tipo.suma }} disponible{{ tipo.suma > 1 ? 's' : '' }}
       </span>
-    </div>
+    </mat-card-content>
 
-    <p class="descripcion">
-      {{ tipo.descripcion }}
-    </p>
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        color="primary"
+        class="w-100"
+        (click)="seleccionar.emit(tipo.id)"
+      >
+        Reservar
+      </button>
+    </mat-card-actions>
 
-    <button
-      mat-raised-button
-      color="primary"
-      class="w-100 mt-3"
-      (click)="seleccionar.emit(tipo.id)"
-    >
-      Reservar
-    </button>
-
-  </div>
+  </mat-card>
 </div>
