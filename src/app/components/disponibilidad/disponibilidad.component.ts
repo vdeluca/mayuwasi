@@ -125,12 +125,21 @@ export class DisponibilidadComponent implements OnInit {
   }
   
   onSeleccionarTipo(tipoId: number): void {
-    // acá después podés:
-    // - mostrar listado de espacios de ese tipo
-    // - o navegar a otra vista
-    console.log('Tipo seleccionado:', tipoId);
-  }
+    const tipo = this.tiposAgrupados.find(t => t.id === tipoId);
   
+    if (!tipo || tipo.espacios.length === 0) {
+      this.snackBar.open(
+        'No se encontró una cabaña disponible para este tipo',
+        'Cerrar',
+        { duration: 4000 }
+      );
+      return;
+    }
+  
+    const primerEspacio = tipo.espacios[0];
+    this.router.navigate(['reservar', primerEspacio.uuid]);
+  }
+    
 }
 
 

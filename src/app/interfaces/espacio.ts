@@ -22,30 +22,32 @@ export interface Espacio {
   
 export interface TipoEspacioAgrupado extends TipoEspacio {
     suma: number;
-}
+    espacios: Espacio[];
+  }
+  
+  export const agruparPorTipoEspacio =
+  (espacios: Espacio[]): TipoEspacioAgrupado[] => {
 
-export const agruparPorTipoEspacio = 
-    (espacios: Espacio[]): TipoEspacioAgrupado[] => 
-        {
-            const mapa = espacios.reduce<Record<number, TipoEspacioAgrupado>>(
-                (acc, espacio) => {
-                    const tipo = espacio.tipo_espacio;
+    const mapa = espacios.reduce<Record<number, TipoEspacioAgrupado>>(
+      (acc, espacio) => {
+        const tipo = espacio.tipo_espacio;
 
-                    if (!acc[tipo.id]) {
-                        acc[tipo.id] = {
-                        ...tipo,
-                        suma: 0,
-                        };
-                    }
+        if (!acc[tipo.id]) {
+          acc[tipo.id] = {
+            ...tipo,
+            suma: 0,
+            espacios: [],
+          };
+        }
 
-                    acc[tipo.id].suma += 1;
+        acc[tipo.id].suma += 1;
+        acc[tipo.id].espacios.push(espacio);
 
-                    return acc;
-                },
-                {}
-            );
+        return acc;
+      },
+      {}
+    );
 
-        return Object.values(mapa);
-
-    };
+    return Object.values(mapa);
+};
   
