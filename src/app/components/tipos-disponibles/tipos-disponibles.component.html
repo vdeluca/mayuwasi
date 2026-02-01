@@ -1,0 +1,17 @@
+<div *ngFor="let tipo of tipos" class="tipo-card">
+    <h3>{{ tipo.definicion }}</h3>
+    <p>{{ tipo.descripcion }}</p>
+  
+    <strong>
+      {{ tipo.suma }} cabaña{{ tipo.suma > 1 ? 's' : '' }} disponible{{ tipo.suma > 1 ? 's' : '' }}
+    </strong>
+  
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="seleccionar.emit(tipo.id)"
+    >
+      Ver disponibilidad
+    </button>
+  </div>
+  

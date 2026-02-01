@@ -79,4 +79,10 @@
 
   </form>
 
+  <app-tipos-disponibles
+  *ngIf="tiposAgrupados.length > 0"
+  [tipos]="tiposAgrupados"
+  (seleccionar)="onSeleccionarTipo($event)"
+  ></app-tipos-disponibles>
+
 </div>
