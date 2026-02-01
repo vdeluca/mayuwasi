@@ -87,6 +87,7 @@ export class DisponibilidadComponent implements OnInit {
   
           // si hay una sola cabaña disponible → redirección directa
           if (espacios.length === 1) {
+            // Toma la primer cabaña de la lista si solo devuelve un tipo de cabaña
             const espacioUuid = espacios[0].uuid;
             this.router.navigate(['reservar', espacioUuid]);
             return;

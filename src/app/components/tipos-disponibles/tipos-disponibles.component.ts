@@ -6,6 +6,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './tipos-disponibles.component.html',
+  styleUrl: './tipos-disponibles.component.css',
 })
 export class TiposDisponiblesComponent {
 

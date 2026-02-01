@@ -1,88 +1,87 @@
 <div class="container my-4">
 
   <form
-    [formGroup]="form"
-    (ngSubmit)="submit()"
-    class="card shadow-sm p-3 p-md-4"
-  >
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+  class="card disponibilidad-form shadow-sm p-4"
+>
 
-    <h3 class="mb-3">Disponibilidad</h3>
+  <h3 class="mb-4 text-center text-md-start">
+    Consultar disponibilidad
+  </h3>
 
-    <div class="row g-3">
+  <div class="row g-4 align-items-end">
 
-      <!-- CHECK-IN -->
-      <div class="col-12 col-md-4">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Check-in</mat-label>
-          <input
-            matInput
-            [matDatepicker]="pickerCheckin"
-            formControlName="checkin"
-          />
-          <mat-datepicker-toggle matSuffix [for]="pickerCheckin" />
-          <mat-datepicker #pickerCheckin />
-        </mat-form-field>
-      </div>
-
-      <!-- CHECK-OUT -->
-      <div class="col-12 col-md-4">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Check-out</mat-label>
-          <input
-            matInput
-            [matDatepicker]="pickerCheckout"
-            formControlName="checkout"
-          />
-          <mat-datepicker-toggle matSuffix [for]="pickerCheckout" />
-          <mat-datepicker #pickerCheckout />
-        </mat-form-field>
-      </div>
-
-      <!-- PAX -->
-      <div class="col-12 col-md-4">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Personas</mat-label>
-          <input
-            matInput
-            type="number"
-            min="1"
-            [max]="capacidadMaxima"
-            formControlName="pax"
-          />
-          <mat-hint>
-            Máx {{ capacidadMaxima }} personas
-          </mat-hint>
-        </mat-form-field>
-      </div>
-
+    <!-- CHECK-IN -->
+    <div class="col-12 col-md-4">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Check-in</mat-label>
+        <input
+          matInput
+          [matDatepicker]="pickerCheckin"
+          formControlName="checkin"
+        />
+        <mat-datepicker-toggle matSuffix [for]="pickerCheckin" />
+        <mat-datepicker #pickerCheckin />
+      </mat-form-field>
     </div>
 
-    <!-- ACCIONES -->
-    <div class="d-flex justify-content-between align-items-center mt-4">
-      <button
-        mat-stroked-button
-        type="button"
-        (click)="volver()"
-      >
-        Volver
-      </button>
+    <!-- CHECK-OUT -->
+    <div class="col-12 col-md-4">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Check-out</mat-label>
+        <input
+          matInput
+          [matDatepicker]="pickerCheckout"
+          formControlName="checkout"
+        />
+        <mat-datepicker-toggle matSuffix [for]="pickerCheckout" />
+        <mat-datepicker #pickerCheckout />
+      </mat-form-field>
+    </div>
 
+    <!-- PAX -->
+    <div class="col-12 col-md-2">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Personas</mat-label>
+        <input
+          matInput
+          type="number"
+          min="1"
+          [max]="capacidadMaxima"
+          formControlName="pax"
+        />
+        <mat-hint>Máx {{ capacidadMaxima }}</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <!-- BOTÓN -->
+    <div class="col-12 col-md-2 d-grid">
       <button
         mat-raised-button
         color="primary"
         type="submit"
         [disabled]="form.invalid"
+        class="h-100"
       >
-        Consultar disponibilidad
+        Buscar
       </button>
     </div>
 
-  </form>
+  </div>
 
-  <app-tipos-disponibles
-  *ngIf="tiposAgrupados.length > 0"
-  [tipos]="tiposAgrupados"
-  (seleccionar)="onSeleccionarTipo($event)"
-  ></app-tipos-disponibles>
+</form>
 
+  <section
+    *ngIf="tiposAgrupados.length > 0"
+    class="resultados"
+  >
+    <h4 class="mb-3">Cabañas disponibles</h4>
+
+    <app-tipos-disponibles
+      [tipos]="tiposAgrupados"
+      (seleccionar)="onSeleccionarTipo($event)"
+    />
+  </section>
+  
 </div>

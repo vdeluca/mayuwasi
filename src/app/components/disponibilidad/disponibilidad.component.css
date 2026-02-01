@@ -1,14 +1,9 @@
-.card {
-    border-radius: 16px;
-  }
-  
-  h3 {
-    font-weight: 500;
-  }
-  
-  @media (max-width: 600px) {
-    h3 {
-      font-size: 1.2rem;
-    }
-  }
-  
+.resultados {
+  margin-top: 3rem;
+}
+
+.resultados h4 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
