@@ -7,3 +7,48 @@
   margin-bottom: 1rem;
 }
 
+.disponibilidad-form {
+  border-radius: 16px;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #fafafa 100%
+  );
+}
+
+.disponibilidad-form h3 {
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  .disponibilidad-form button {
+    height: 48px;
+  }
+}
+
+.buscar-btn {
+  width: 100%;
+  height: 56px; /* misma altura que los mat-form-field */
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(25, 118, 210, 0.35);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.buscar-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(25, 118, 210, 0.45);
+}
+
+.buscar-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(25, 118, 210, 0.35);
+}
+
+.buscar-btn:disabled {
+  opacity: 0.6;
+  box-shadow: none;
+}

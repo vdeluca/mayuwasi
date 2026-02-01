@@ -48,7 +48,7 @@ export class DisponibilidadComponent implements OnInit {
     this.form = this.fb.group({
       checkin: [null, Validators.required],
       checkout: [null, Validators.required],
-      pax: [1, [Validators.required, Validators.min(1)]],
+      pax: [2, [Validators.required, Validators.min(1)]],
     });
   }
 
