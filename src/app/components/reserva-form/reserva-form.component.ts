@@ -73,7 +73,7 @@ export class ReservaFormComponent implements OnInit {
     deposito: [0],
     total: [0],
     codigo_operacion: [''],
-    estado: ['Reservado'],
+    estado: ['Solicitado'],
     espacio: [''],
     servicio: [''],
   });
@@ -98,8 +98,8 @@ export class ReservaFormComponent implements OnInit {
         const payload = {
           espacio,
           pax,
-          checkin: this.formatDate(checkin),
-          checkout: this.formatDate(checkout),
+          checkin: this.toBackendDateTime(checkin as unknown as Date),
+          checkout: this.toBackendDateTime(checkin as unknown as Date),
         };
 
         this.cotizando = true;
@@ -133,8 +133,8 @@ export class ReservaFormComponent implements OnInit {
     
       this.form.patchValue({
         espacio: espacioUuid,
-        checkin: checkin ? this.formatDate(checkin) : null,
-        checkout: checkout ? this.formatDate(checkout) : null,
+        checkin: checkin ? this.toBackendDateTime(checkin as unknown as Date) : null,
+        checkout: checkout ? this.toBackendDateTime(checkout as unknown as Date): null,
         pax: pax ? Number(pax) : this.form.value.pax,
       });
     
@@ -170,6 +170,7 @@ export class ReservaFormComponent implements OnInit {
 
   submit = (): void => {
     if (this.form.invalid) {
+      //Esto no se que hace
       this.form.markAllAsTouched();
       return;
     }
@@ -188,7 +189,7 @@ export class ReservaFormComponent implements OnInit {
           );
           // redirigir luego de un pequeño delay
           setTimeout(() => {
-            this.router.navigate(['/espacios']);
+            this.router.navigate(['/']);
           }, 3000);
         },
         error: () => {
