@@ -127,6 +127,24 @@ export class ReservaFormComponent implements OnInit {
     );
       
     this.route.queryParamMap.subscribe(params => {
+      const checkin = params. get('checkin');
+      const checkout = params.get('checkout');
+      const pax = params.get('pax');
+    
+      this.form.patchValue({
+        espacio: espacioUuid,
+        checkin: checkin ? this.formatDate(checkin) : null,
+        checkout: checkout ? this.formatDate(checkout) : null,
+        pax: pax ? Number(pax) : this.form.value.pax,
+      });
+    
+      this.espaciosService.getEspacio(espacioUuid)
+        .subscribe(espacio => {
+          this.espacioSeleccionado = espacio;
+        });
+    });
+    
+    this.route.queryParamMap.subscribe(params => {
       // setear el form
       this.form.patchValue({ espacio: espacioUuid });
   
@@ -219,4 +237,11 @@ export class ReservaFormComponent implements OnInit {
     // fallback: string
     return new Date(value).toISOString().split('T')[0];
   }
+
+  private toBackendDateTime(date: Date): string {
+    const d = new Date(date);
+    d.setHours(12, 0, 0, 0); // evita corrimientos por timezone
+    return d.toISOString(); // 2026-02-10T12:00:00.000Z
+  }
+  
 }

@@ -51,14 +51,6 @@
     <div class="grid">
 
       <mat-form-field appearance="outline">
-        <mat-label>Nombre</mat-label>
-        <input matInput formControlName="nombre" />
-        <mat-error *ngIf="form.get('nombre')?.hasError('required')">
-          El nombre es obligatorio
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
         <mat-label>PAX</mat-label>
         <input matInput type="number" formControlName="pax" />
       </mat-form-field>
@@ -85,6 +77,14 @@
         />
         <mat-datepicker-toggle matSuffix [for]="pickerCheckout" />
         <mat-datepicker #pickerCheckout [dateClass]="dateClass" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" />
+        <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+          El nombre es obligatorio
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">

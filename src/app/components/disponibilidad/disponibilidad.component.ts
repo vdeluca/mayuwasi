@@ -41,6 +41,11 @@ export class DisponibilidadComponent implements OnInit {
 
   private snackBar = inject(MatSnackBar);
 
+  checkinDate!: Date;
+  checkoutDate!: Date;
+  paxSeleccionado!: number;  
+
+
   constructor(private fb: FormBuilder, 
     private dispobilidadService: DisponibilidadService) {}
 
@@ -63,7 +68,11 @@ export class DisponibilidadComponent implements OnInit {
     }
   
     const { checkin, checkout, pax } = this.form.value;
-  
+
+    this.checkinDate = checkin;
+    this.checkoutDate = checkout;
+    this.paxSeleccionado = pax;
+        
     this.dispobilidadService
       .getDisponibilidadCabanas(
         this.toISODate(checkin),
@@ -123,6 +132,10 @@ export class DisponibilidadComponent implements OnInit {
   private toISODate(date: Date): string {
     return date.toISOString().split('T')[0];
   }
+  private toISODateTime(date: Date): string {
+    return date.toISOString(); // 2026-02-10T00:00:00.000Z
+  }
+  
   
   onSeleccionarTipo(tipoId: number): void {
     const tipo = this.tiposAgrupados.find(t => t.id === tipoId);
@@ -135,9 +148,20 @@ export class DisponibilidadComponent implements OnInit {
       );
       return;
     }
-  
-    const primerEspacio = tipo.espacios[0];
-    this.router.navigate(['reservar', primerEspacio.uuid]);
+
+    const espacioUuid = tipo.espacios[0].uuid;
+
+    this.router.navigate(
+      ['reservar', espacioUuid],
+      {
+        queryParams: {
+          checkin: this.toISODateTime(this.checkinDate),
+          checkout: this.toISODateTime(this.checkoutDate),
+          pax: this.paxSeleccionado,
+        },
+      }
+    );
+    
   }
     
 }
