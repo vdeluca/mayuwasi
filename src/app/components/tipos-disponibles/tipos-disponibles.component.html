@@ -7,7 +7,7 @@
 
     <mat-card-header>
       <mat-card-title>{{ tipo.definicion }}</mat-card-title>
-      <mat-card-subtitle>{{ tipo.subtitulo }}</mat-card-subtitle>
+      <mat-card-subtitle>{{ tipo.descripcion }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content class="imagen-wrapper">
@@ -18,13 +18,29 @@
     </mat-card-content>
 
     <mat-card-content>
-      <p class="descripcion">
-        {{ tipo.descripcion }}
-      </p>
+
+      <ng-container *ngIf="getCotizacion(tipo.id) as cotizacion; else cargando">
+        <p class="precio-total">
+          Total: <strong>${{ cotizacion.total | number }}</strong>
+        </p>
+
+        <p class="detalle">
+          {{ cotizacion.detalle.length }}
+          noche{{ cotizacion.detalle.length > 1 ? 's' : '' }}
+          · {{ pax }} personas
+        </p>
+      </ng-container>
+
+      <ng-template #cargando>
+        <p class="descripcion">
+          Calculando cotización…
+        </p>
+      </ng-template>
 
       <span class="badge">
         {{ tipo.suma }} disponible{{ tipo.suma > 1 ? 's' : '' }}
       </span>
+
     </mat-card-content>
 
     <mat-card-actions>

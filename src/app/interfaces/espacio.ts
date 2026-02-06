@@ -6,6 +6,7 @@ export interface TipoEspacio {
     descripcion: string;
     informacion: string;
     capacidad: number;
+    imagen_portada: string | null;
 }
   
 export interface Espacio {

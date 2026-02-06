@@ -80,6 +80,9 @@
     <app-tipos-disponibles
       [tipos]="tiposAgrupados"
       (seleccionar)="onSeleccionarTipo($event)"
+      [checkin]="form.value.checkin"
+      [checkout]="form.value.checkout"
+      [pax]="form.value.pax"
     />
   </section>
   

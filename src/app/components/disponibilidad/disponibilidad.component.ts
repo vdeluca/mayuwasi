@@ -7,7 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DisponibilidadService } from '../../services/disponibilidad.service';
-import { agruparPorTipoEspacio } from '../../interfaces/espacio'
+import { agruparPorTipoEspacio, TipoEspacio, TipoEspacioAgrupado } from '../../interfaces/espacio'
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TiposDisponiblesComponent } from '../tipos-disponibles/tipos-disponibles.component';
@@ -35,7 +35,7 @@ export class DisponibilidadComponent implements OnInit {
 
   capacidadMaxima = 5; // podés setearlo desde espacioSeleccionado
 
-  tiposAgrupados: any[] = []; // acá van los resultados agrupados
+  tiposAgrupados: TipoEspacioAgrupado[] = []; // acá van los resultados agrupados
 
   router = inject(Router);
 

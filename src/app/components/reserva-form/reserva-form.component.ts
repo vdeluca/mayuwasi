@@ -79,93 +79,93 @@ export class ReservaFormComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    // Get param from route
-    const espacioUuid = this.route.snapshot.paramMap.get('espacioUuid')!;
-    if (!espacioUuid) return;
-    this.form.valueChanges
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged()
-      )
-      .subscribe(values => {
-        const { checkin, checkout, pax, espacio } = values;
-
-        if (!checkin || !checkout || !pax || !espacio) {
-          this.cotizacion = undefined;
-          return;
-        }
-
-        const payload = {
-          espacio,
-          pax,
-          checkin: this.toBackendDateTime(checkin as unknown as Date),
-          checkout: this.toBackendDateTime(checkin as unknown as Date),
-        };
-
-        this.cotizando = true;
-
-        this.cotizacionService.cotizarReserva(payload)
-          .subscribe({
-            next: cotizacion => {
-              this.cotizacion = cotizacion;
-              this.form.patchValue(
-                {
-                  total: cotizacion.total,
-                },
-                { emitEvent: false }
-              );
-            },
-            error: (error) => {
-              this.cotizacion = undefined;
-              console.log(error);
-            },
-            complete: () => {
-              this.cotizando = false;
-            }
-        });
-      }
-    );
-      
-    this.route.queryParamMap.subscribe(params => {
-      const checkin = params. get('checkin');
-      const checkout = params.get('checkout');
-      const pax = params.get('pax');
-    
-      this.form.patchValue({
-        espacio: espacioUuid,
-        checkin: checkin ? this.toBackendDateTime(checkin as unknown as Date) : null,
-        checkout: checkout ? this.toBackendDateTime(checkout as unknown as Date): null,
-        pax: pax ? Number(pax) : this.form.value.pax,
-      });
-    
-      this.espaciosService.getEspacio(espacioUuid)
-        .subscribe(espacio => {
-          this.espacioSeleccionado = espacio;
-        });
-    });
-    
-    this.route.queryParamMap.subscribe(params => {
-      // setear el form
-      this.form.patchValue({ espacio: espacioUuid });
-  
-      // buscar el espacio para mostrar su nombre
-      this.espaciosService.getEspacio(espacioUuid)
-        .subscribe(espacio => {
-          this.espacioSeleccionado = espacio;
-          console.log(this.espacioSeleccionado);
-        });
-    });
-
-    // Recupera todas las reservas del espacio
-    this.reservasService
-      .getReservasByEspacio(espacioUuid)
-      .subscribe(data => {
-        this.reservas = data.map(r => ({
-        checkin: new Date(r.checkin),
-        checkout: new Date(r.checkout),
-      }));
-    });
-  
+//    // Get param from route
+//    const espacioUuid = this.route.snapshot.paramMap.get('espacioUuid')!;
+//    if (!espacioUuid) return;
+//    this.form.valueChanges
+//      .pipe(
+//        debounceTime(300),
+//        distinctUntilChanged()
+//      )
+//      .subscribe(values => {
+//        const { checkin, checkout, pax, espacio } = values;
+//
+//        if (!checkin || !checkout || !pax || !espacio) {
+//          this.cotizacion = undefined;
+//          return;
+//        }
+//
+//        const payload = {
+//          espacio,
+//          pax,
+//          checkin: this.toBackendDateTime(checkin as unknown as Date),
+//          checkout: this.toBackendDateTime(checkin as unknown as Date),
+//        };
+//
+//        this.cotizando = true;
+//
+//        this.cotizacionService.cotizarReserva(payload)
+//          .subscribe({
+//            next: cotizacion => {
+//              this.cotizacion = cotizacion;
+//              this.form.patchValue(
+//                {
+//                  total: cotizacion.total,
+//                },
+//                { emitEvent: false }
+//              );
+//            },
+//            error: (error) => {
+//              this.cotizacion = undefined;
+//              console.log(error);
+//            },
+//            complete: () => {
+//              this.cotizando = false;
+//            }
+//        });
+//      }
+//    );
+//      
+//    this.route.queryParamMap.subscribe(params => {
+//      const checkin = params. get('checkin');
+//      const checkout = params.get('checkout');
+//      const pax = params.get('pax');
+//    
+//      this.form.patchValue({
+//        espacio: espacioUuid,
+//        checkin: checkin ? this.toBackendDateTime(checkin as unknown as Date) : null,
+//        checkout: checkout ? this.toBackendDateTime(checkout as unknown as Date): null,
+//        pax: pax ? Number(pax) : this.form.value.pax,
+//      });
+//    
+//      this.espaciosService.getEspacio(espacioUuid)
+//        .subscribe(espacio => {
+//          this.espacioSeleccionado = espacio;
+//        });
+//    });
+//    
+//    this.route.queryParamMap.subscribe(params => {
+//      // setear el form
+//      this.form.patchValue({ espacio: espacioUuid });
+//  
+//      // buscar el espacio para mostrar su nombre
+//      this.espaciosService.getEspacio(espacioUuid)
+//        .subscribe(espacio => {
+//          this.espacioSeleccionado = espacio;
+//          console.log(this.espacioSeleccionado);
+//        });
+//    });
+//
+//    // Recupera todas las reservas del espacio
+//    this.reservasService
+//      .getReservasByEspacio(espacioUuid)
+//      .subscribe(data => {
+//        this.reservas = data.map(r => ({
+//        checkin: new Date(r.checkin),
+//        checkout: new Date(r.checkout),
+//      }));
+//    });
+//  
   }
 
   submit = (): void => {

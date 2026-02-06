@@ -1,21 +1,25 @@
-export interface CotizacionReserva {
-    dias: number;
-    noches: number;
+export interface CotizarReservaRequest {
+    id: number;  
+    checkin: string;   // YYYY-MM-DD
+    checkout: string;  // YYYY-MM-DD
+    pax: number;
+    late_checkout?: boolean;
+  }
+  
+  export interface CotizacionReserva {
+    espacio: string;
+    checkin: string;
+    checkout: string;
+    pax: number;
     total: number;
     detalle: CotizacionDetalle[];
-}
-
-export interface CotizacionDetalle {
-    tipo: 'DIA' | 'NOCHE';
-    cantidad: number;
-    precio_unitario: number;
-    subtotal: number;
-    tarifa_uuid: string;
-}
+  }
   
-export interface CotizarReservaRequest {
-    espacio: string;      // uuid
-    checkin: string;      // YYYY-MM-DD
-    checkout: string;     // YYYY-MM-DD
-    pax: number;
-}
+  export interface CotizacionDetalle {
+    fecha: string;              // YYYY-MM-DD
+    tipo_periodo: 'semana' | 'finde';
+    precio_base: number;
+    pax_extra: number;
+    subtotal: number;
+  }
+  
