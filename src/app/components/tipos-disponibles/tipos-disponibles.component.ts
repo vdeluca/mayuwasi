@@ -50,6 +50,7 @@ export class TiposDisponiblesComponent implements AfterViewInit {
 
   private cotizarTipos(): void {
     this.tipos.forEach(tipo => {
+      
 
       const payload: CotizarReservaRequest = {
         id: tipo.id, // asumimos que el backend acepta tipo o espacio representativo
