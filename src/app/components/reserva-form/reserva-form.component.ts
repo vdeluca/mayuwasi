@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -97,9 +98,26 @@ export class ReservaFormComponent implements OnInit {
       this.cotizarDesdeFormulario();
     });
 
-    this.form.valueChanges
-      .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe(() => this.cotizarDesdeFormulario());
+    const checkinControl = this.form.get('checkin');
+    const checkoutControl = this.form.get('checkout');
+    const paxControl = this.form.get('pax');
+
+    if (checkinControl && checkoutControl && paxControl) {
+      combineLatest([
+        checkinControl.valueChanges,
+        checkoutControl.valueChanges,
+        paxControl.valueChanges,
+      ])
+        .pipe(
+          debounceTime(300),
+          distinctUntilChanged(([prevCheckin, prevCheckout, prevPax], [currCheckin, currCheckout, currPax]) =>
+            this.toISODate(prevCheckin as Date | string) === this.toISODate(currCheckin as Date | string) &&
+            this.toISODate(prevCheckout as Date | string) === this.toISODate(currCheckout as Date | string) &&
+            prevPax === currPax
+          )
+        )
+        .subscribe(() => this.cotizarDesdeFormulario());
+    }
 
     this.reservasService.getReservasByEspacio(espacioUuid).subscribe(data => {
       this.reservas = data.map(r => ({
