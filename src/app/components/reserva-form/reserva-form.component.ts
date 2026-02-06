@@ -88,44 +88,18 @@ export class ReservaFormComponent implements OnInit {
         checkout,
         pax: pax ? Number(pax) : this.form.value.pax,
       });
+
+      this.cotizarDesdeFormulario();
     });
 
     this.espaciosService.getEspacio(espacioUuid).subscribe(espacio => {
       this.espacioSeleccionado = espacio;
+      this.cotizarDesdeFormulario();
     });
 
     this.form.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe(values => {
-        const { checkin, checkout, pax } = values;
-        const tipoEspacioId = this.espacioSeleccionado?.tipo_espacio?.id;
-
-        if (!checkin || !checkout || !pax || !tipoEspacioId) {
-          this.cotizacion = undefined;
-          return;
-        }
-
-        const payload: CotizarReservaRequest = {
-          id: Number(tipoEspacioId),
-          checkin: this.toISODate(checkin),
-          checkout: this.toISODate(checkout),
-          pax,
-        };
-
-        this.cotizando = true;
-        this.cotizacionService
-          .cotizarReserva(payload)
-          .pipe(finalize(() => (this.cotizando = false)))
-          .subscribe({
-            next: cotizacion => {
-              this.cotizacion = cotizacion;
-              this.form.patchValue({ total: cotizacion.total }, { emitEvent: false });
-            },
-            error: () => {
-              this.cotizacion = undefined;
-            },
-          });
-      });
+      .subscribe(() => this.cotizarDesdeFormulario());
 
     this.reservasService.getReservasByEspacio(espacioUuid).subscribe(data => {
       this.reservas = data.map(r => ({
@@ -203,5 +177,36 @@ export class ReservaFormComponent implements OnInit {
     }
 
     return value.includes('T') ? value.split('T')[0] : value;
+  }
+
+  private cotizarDesdeFormulario(): void {
+    const { checkin, checkout, pax } = this.form.value;
+    const tipoEspacioId = this.espacioSeleccionado?.tipo_espacio?.id;
+
+    if (!checkin || !checkout || !pax || !tipoEspacioId) {
+      this.cotizacion = undefined;
+      return;
+    }
+
+    const payload: CotizarReservaRequest = {
+      id: Number(tipoEspacioId),
+      checkin: this.toISODate(checkin),
+      checkout: this.toISODate(checkout),
+      pax,
+    };
+
+    this.cotizando = true;
+    this.cotizacionService
+      .cotizarReserva(payload)
+      .pipe(finalize(() => (this.cotizando = false)))
+      .subscribe({
+        next: cotizacion => {
+          this.cotizacion = cotizacion;
+          this.form.patchValue({ total: cotizacion.total }, { emitEvent: false });
+        },
+        error: () => {
+          this.cotizacion = undefined;
+        },
+      });
   }
 }
