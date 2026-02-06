@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { environment } from '../../../environments/environment';
@@ -18,7 +18,7 @@ import { CotizacionService } from '../../services/cotizacion.service';
   templateUrl: './tipos-disponibles.component.html',
   styleUrl: './tipos-disponibles.component.css',
 })
-export class TiposDisponiblesComponent implements AfterViewInit {
+export class TiposDisponiblesComponent implements OnChanges {
 
   constructor(
     private cotizacionService: CotizacionService
@@ -28,10 +28,10 @@ export class TiposDisponiblesComponent implements AfterViewInit {
   tipos: TipoEspacioAgrupado[] = [];
 
   @Input({ required: true })
-  checkin!: string;
+  checkin!: Date | string;
 
   @Input({ required: true })
-  checkout!: string;
+  checkout!: Date | string;
 
   @Input({ required: true })
   pax!: number;
@@ -44,18 +44,31 @@ export class TiposDisponiblesComponent implements AfterViewInit {
   // Cotizaciones por tipo (key = tipo.id)
   cotizaciones: Record<number, CotizacionReserva> = {};
 
-  ngAfterViewInit(): void {
-    this.cotizarTipos();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes['tipos'] ||
+      changes['checkin'] ||
+      changes['checkout'] ||
+      changes['pax']
+    ) {
+      this.cotizaciones = {};
+      this.cotizarTipos();
+    }
   }
 
   private cotizarTipos(): void {
-    this.tipos.forEach(tipo => {
-      
+    const checkin = this.toISODate(this.checkin);
+    const checkout = this.toISODate(this.checkout);
 
+    if (!checkin || !checkout || !this.pax || this.tipos.length === 0) {
+      return;
+    }
+
+    this.tipos.forEach(tipo => {
       const payload: CotizarReservaRequest = {
         id: tipo.id, // asumimos que el backend acepta tipo o espacio representativo
-        checkin: this.checkin,
-        checkout: this.checkout,
+        checkin,
+        checkout,
         pax: this.pax
       };
 
@@ -74,5 +87,17 @@ export class TiposDisponiblesComponent implements AfterViewInit {
 
   getCotizacion(tipoId: number): CotizacionReserva | null {
     return this.cotizaciones[tipoId] ?? null;
+  }
+
+  private toISODate(value: Date | string): string {
+    if (!value) {
+      return '';
+    }
+
+    if (value instanceof Date) {
+      return value.toISOString().split('T')[0];
+    }
+
+    return value.includes('T') ? value.split('T')[0] : value;
   }
 }
