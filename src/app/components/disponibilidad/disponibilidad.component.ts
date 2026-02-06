@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -7,8 +7,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DisponibilidadService } from '../../services/disponibilidad.service';
-import { agruparPorTipoEspacio, TipoEspacio, TipoEspacioAgrupado } from '../../interfaces/espacio'
+import { agruparPorTipoEspacio, TipoEspacioAgrupado } from '../../interfaces/espacio'
 import { Router } from '@angular/router';
+import { debounceTime } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TiposDisponiblesComponent } from '../tipos-disponibles/tipos-disponibles.component';
 
@@ -30,6 +32,9 @@ import { TiposDisponiblesComponent } from '../tipos-disponibles/tipos-disponible
   styleUrl: './disponibilidad.component.css',
 })
 export class DisponibilidadComponent implements OnInit {
+
+  private destroyRef = inject(DestroyRef);
+  private busquedaIniciada = false;
 
   form!: FormGroup;
 
@@ -55,6 +60,19 @@ export class DisponibilidadComponent implements OnInit {
       checkout: [null, Validators.required],
       pax: [2, [Validators.required, Validators.min(1)]],
     });
+
+    this.form.valueChanges
+      .pipe(
+        debounceTime(300),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => {
+        if (!this.busquedaIniciada || this.form.invalid) {
+          return;
+        }
+
+        this.buscarDisponibilidad(false);
+      });
   }
 
   submit(): void {
@@ -66,13 +84,18 @@ export class DisponibilidadComponent implements OnInit {
       );
       return;
     }
-  
+
+    this.busquedaIniciada = true;
+    this.buscarDisponibilidad(true);
+  }
+
+  private buscarDisponibilidad(redireccionarSiEsUnica: boolean): void {
     const { checkin, checkout, pax } = this.form.value;
 
     this.checkinDate = checkin;
     this.checkoutDate = checkout;
     this.paxSeleccionado = pax;
-        
+
     this.dispobilidadService
       .getDisponibilidadCabanas(
         this.toISODate(checkin),
@@ -82,30 +105,18 @@ export class DisponibilidadComponent implements OnInit {
       .subscribe({
         next: (espacios) => {
           if (!espacios || espacios.length === 0) {
-            this.snackBar.open(
-              'No hay cabañas disponibles para las fechas seleccionadas',
-              'Cerrar',
-              { duration: 5000 }
-            );
             this.tiposAgrupados = [];
             return;
           }
-  
-          // agrupamos
+
           this.tiposAgrupados = agruparPorTipoEspacio(espacios);
-  
-          // si hay una sola cabaña disponible → redirección directa
-          if (espacios.length === 1) {
-            // Toma la primer cabaña de la lista si solo devuelve un tipo de cabaña
+
+          if (redireccionarSiEsUnica && espacios.length === 1) {
             const espacioUuid = espacios[0].uuid;
             this.router.navigate(['reservar', espacioUuid]);
-            return;
           }
-  
-          // si hay varias, seguimos mostrando el listado agrupado
-          console.log('Tipos agrupados:', this.tiposAgrupados);
         },
-  
+
         error: (err) => {
           this.mostrarErrorBackend(err);
         }
