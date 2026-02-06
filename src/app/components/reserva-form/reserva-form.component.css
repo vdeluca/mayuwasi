@@ -143,3 +143,24 @@
     gap: 12px;
   }
 }
+
+
+.cotizando {
+  margin: 0;
+  color: #666;
+}
+
+.resumen {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  background: #fafafa;
+}
+
+.linea,
+.total {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+}

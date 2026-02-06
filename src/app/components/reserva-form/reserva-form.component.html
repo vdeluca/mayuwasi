@@ -1,10 +1,6 @@
 <div class="container">
-
   @if (espacioSeleccionado) {
-
-    <!-- HERO DEL ESPACIO -->
     <section class="espacio-hero">
-
       <img
         *ngIf="espacioSeleccionado.imagen1"
         class="hero-image"
@@ -16,21 +12,13 @@
         <h2 class="title">{{ espacioSeleccionado.titulo }}</h2>
         <span class="pax">Capacidad: {{ espacioSeleccionado.tipo_espacio.capacidad }} personas</span>
       </div>
-
     </section>
 
-    <!-- DESCRIPCIÓN -->
-    <section
-      class="descripcion"
-      *ngIf="espacioSeleccionado.tipo_espacio.descripcion"
-    >
+    <section class="descripcion" *ngIf="espacioSeleccionado.tipo_espacio.descripcion">
       {{ espacioSeleccionado.tipo_espacio.descripcion }}
     </section>
 
-    <!-- GALERÍA SIMPLE -->
-    <section class="galeria" *ngIf="
-      espacioSeleccionado.imagen2 || espacioSeleccionado.imagen3
-    ">
+    <section class="galeria" *ngIf="espacioSeleccionado.imagen2 || espacioSeleccionado.imagen3">
       <img
         *ngIf="espacioSeleccionado.imagen2"
         [src]="apiUrl + espacioSeleccionado.imagen2"
@@ -42,14 +30,10 @@
         alt="Imagen secundaria"
       />
     </section>
-
   }
 
-  <!-- FORMULARIO -->
   <form [formGroup]="form" (ngSubmit)="submit()" class="form">
-
     <div class="grid">
-
       <mat-form-field appearance="outline">
         <mat-label>PAX</mat-label>
         <input matInput type="number" formControlName="pax" />
@@ -101,14 +85,16 @@
         <mat-label>Observaciones</mat-label>
         <textarea matInput rows="3" formControlName="observaciones"></textarea>
       </mat-form-field>
-
     </div>
-<!--
+
+    @if (cotizando) {
+      <p class="cotizando">Cotizando estadía...</p>
+    }
 
     @if (cotizacion) {
       <section class="resumen">
         <h3>Resumen de la estadía</h3>
-        
+
         <div class="linea" *ngFor="let item of cotizacion.detalle">
           <span>
             {{ item.cantidad }}
@@ -121,13 +107,13 @@
             {{ item.subtotal | currency:'ARS' }}
           </strong>
         </div>
-    
+
         <div class="total">
           Total:
           <strong>{{ cotizacion.total | currency:'ARS' }}</strong>
         </div>
       </section>
-    }    
+    }
 
     <div class="actions">
       <button mat-raised-button type="button" (click)="goBack()">
@@ -137,8 +123,5 @@
         Guardar reserva
       </button>
     </div>
-
   </form>
-
 </div>
--->    
