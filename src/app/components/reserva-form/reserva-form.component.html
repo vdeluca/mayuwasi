@@ -97,11 +97,11 @@
 
         <div class="linea" *ngFor="let item of cotizacion.detalle">
           <span>
-            {{ item.cantidad }}
-            {{ item.tipo === 'DIA' ? 'día(s)' : 'noche(s)' }}
+            {{ item.fecha | date:'dd/MM/yyyy' }} · {{ item.tipo_periodo }}
           </span>
           <span>
-            {{ item.precio_unitario | currency:'ARS' }}
+            Base: {{ item.precio_base | currency:'ARS' }}
+            <ng-container *ngIf="item.pax_extra > 0"> + Extra pax: {{ item.pax_extra | currency:'ARS' }}</ng-container>
           </span>
           <strong>
             {{ item.subtotal | currency:'ARS' }}
