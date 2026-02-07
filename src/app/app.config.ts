@@ -5,6 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { LOCALE_ID } from '@angular/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { DATE_FORMATS_ES } from './core/date/date-format-es';
 
 
@@ -17,6 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     { provide: LOCALE_ID, useValue: 'es-AR' },
-    { provide: 'MAT_DATE_FORMATS', useValue: DATE_FORMATS_ES },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-AR' },
+    { provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS_ES },
   ],
 };
