@@ -13,7 +13,7 @@ import { debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TiposDisponiblesComponent } from '../tipos-disponibles/tipos-disponibles.component';
-
+import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 
 
 @Component({
@@ -174,7 +174,19 @@ export class DisponibilidadComponent implements OnInit {
     );
     
   }
-    
+
+  dateClass: MatCalendarCellClassFunction<Date> = (date, view) => {
+    if (view !== 'month') return '';
+  
+    const day = date.getDay(); // 0 domingo, 6 sábado
+  
+    if (day === 0) return 'domingo';
+    if (day === 6) return 'sabado';
+  
+    return '';
+  };
+  
+  
 }
 
 

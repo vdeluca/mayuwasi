@@ -52,3 +52,19 @@
   opacity: 0.6;
   box-shadow: none;
 }
+::ng-deep .mat-calendar-body-cell.sabado .mat-calendar-body-cell-content {
+  color: #1976d2;
+  font-weight: 600;
+}
+
+::ng-deep .mat-calendar-body-cell.domingo .mat-calendar-body-cell-content {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+::ng-deep .mat-calendar-body-cell.feriado .mat-calendar-body-cell-content {
+  background: #ffebee;
+  color: #c62828;
+  border-radius: 50%;
+  font-weight: 700;
+}

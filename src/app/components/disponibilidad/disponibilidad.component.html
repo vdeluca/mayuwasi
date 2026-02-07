@@ -15,28 +15,34 @@
     <!-- CHECK-IN -->
     <div class="col-12 col-md-4">
       <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Check-in</mat-label>
+        <mat-label>Ingreso</mat-label>
         <input
           matInput
           [matDatepicker]="pickerCheckin"
           formControlName="checkin"
         />
         <mat-datepicker-toggle matSuffix [for]="pickerCheckin" />
-        <mat-datepicker #pickerCheckin />
+        <mat-datepicker 
+          #pickerCheckin 
+          [dateClass]="dateClass"
+        />
       </mat-form-field>
     </div>
 
     <!-- CHECK-OUT -->
     <div class="col-12 col-md-4">
       <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Check-out</mat-label>
+        <mat-label>Salida</mat-label>
         <input
           matInput
           [matDatepicker]="pickerCheckout"
           formControlName="checkout"
         />
         <mat-datepicker-toggle matSuffix [for]="pickerCheckout" />
-        <mat-datepicker #pickerCheckout />
+        <mat-datepicker 
+          #pickerCheckout 
+          [dateClass]="dateClass"  
+        />
       </mat-form-field>
     </div>
 
