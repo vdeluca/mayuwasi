@@ -135,17 +135,17 @@ export class ReservaFormComponent implements OnInit {
 
     this.reservasService.createReserva(this.form.value as any).subscribe({
       next: () => {
-        this.snackBar.open('✅ Reserva realizada con éxito', 'Ver espacios', {
-          duration: 3000,
+        this.snackBar.open('Reserva realizada con éxito', 'Nos comunicaremos por WhatsApp a la brevedad', {
+          duration: 4000,
           horizontalPosition: 'center',
           verticalPosition: 'top'
         });
         setTimeout(() => {
           this.router.navigate(['/']);
-        }, 3000);
+        }, 4000);
       },
       error: () => {
-        this.snackBar.open('❌ Error al crear la reserva', 'Cerrar', { duration: 4000 });
+        this.snackBar.open('Error al crear la reserva', 'Cerrar', { duration: 4000 });
       }
     });
   };
