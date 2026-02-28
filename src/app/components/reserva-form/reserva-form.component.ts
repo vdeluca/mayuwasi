@@ -206,7 +206,11 @@ export class ReservaFormComponent implements OnInit {
   }
 
   private cotizarDesdeFormulario(): void {
-    if (this.form.invalid) {
+    if (
+      this.form.get('checkin')?.invalid ||
+      this.form.get('checkout')?.invalid ||
+      this.form.get('pax')?.invalid
+    ) {
       this.cotizacion = undefined;
       return;
     }
