@@ -47,6 +47,9 @@ export class ReservaFormComponent implements OnInit {
   private router = inject(Router);
   private espaciosService = inject(EspaciosService);
   private cotizacionService = inject(CotizacionService);
+  
+  // Para que no seleccione fechas anteriores al día de hoy
+  minDate = new Date();
 
   reservas: { checkin: Date; checkout: Date }[] = [];
   cotizacion?: CotizacionReserva;
@@ -71,7 +74,8 @@ export class ReservaFormComponent implements OnInit {
       servicio: [''],
     },
     {
-      validators: rangoFechasValidator
+      validators: rangoFechasValidator,
+      checkinNoPasadoValidator
     }
   );
   ngOnInit(): void {
@@ -272,4 +276,23 @@ function rangoFechasValidator(control: AbstractControl): ValidationErrors | null
   // 👇 acá está la magia
   checkoutCtrl.setErrors({ rangoFechasInvalido: true });
   return { rangoFechasInvalido: true };
+}
+
+
+export function checkinNoPasadoValidator(
+  control: AbstractControl
+): ValidationErrors | null {
+
+  const checkin = control.get('checkin')?.value;
+  if (!checkin) return null;
+
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+
+  const checkinDate = new Date(checkin);
+  checkinDate.setHours(0, 0, 0, 0);
+
+  return checkinDate < hoy
+    ? { checkinEnPasado: true }
+    : null;
 }

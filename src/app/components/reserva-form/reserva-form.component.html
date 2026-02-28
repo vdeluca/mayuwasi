@@ -46,6 +46,7 @@
           [matDatepicker]="pickerCheckin"
           [matDatepickerFilter]="dateFilter"
           formControlName="checkin"
+          [min]="minDate"
         />
         <mat-datepicker-toggle matSuffix [for]="pickerCheckin" />
         <mat-datepicker #pickerCheckin [dateClass]="dateClass" />
@@ -58,6 +59,7 @@
           [matDatepicker]="pickerCheckout"
           [matDatepickerFilter]="dateFilter"
           formControlName="checkout"
+          [min]="form.value.checkin || minDate"
         />
         <mat-datepicker-toggle matSuffix [for]="pickerCheckout" />
         <mat-datepicker #pickerCheckout [dateClass]="dateClass" />
@@ -115,10 +117,14 @@
         </div>
       </section>
     }
-    <mat-error *ngIf="form.hasError('rangoFechasInvalido')">
-      La fecha de salida debe ser posterior a la fecha de entrada
-    </mat-error>
 
+    <mat-error *ngIf="form.hasError('checkinEnPasado')">
+      La fecha de ingreso no puede ser anterior a hoy
+    </mat-error>
+    
+    <mat-error *ngIf="form.hasError('rangoFechasInvalido')">
+      La fecha de salida debe ser posterior a la de ingreso
+    </mat-error>
 
     <div class="actions">
       <button mat-raised-button type="button" (click)="goBack()">

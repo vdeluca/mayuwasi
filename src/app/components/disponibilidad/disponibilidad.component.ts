@@ -37,6 +37,8 @@ export class DisponibilidadComponent implements OnInit {
   private busquedaIniciada = false;
 
   form!: FormGroup;
+  // Para que no seleccione fechas anteriores al día de hoy
+  minDate = new Date();
 
   capacidadMaxima = 5; // podés setearlo desde espacioSeleccionado
 
@@ -61,7 +63,12 @@ export class DisponibilidadComponent implements OnInit {
         checkout: [null, Validators.required],
         pax: [2, [Validators.required, Validators.min(1)]],
       },
-      { validators: rangoFechasValidator }
+      {
+        validators: [
+          rangoFechasValidator,
+          checkinNoPasadoValidator
+        ]
+      }
     );
 
     this.form.valueChanges
@@ -207,3 +214,21 @@ export function rangoFechasValidator(
     : { rangoFechasInvalido: true };
 }
 
+
+export function checkinNoPasadoValidator(
+  control: AbstractControl
+): ValidationErrors | null {
+
+  const checkin = control.get('checkin')?.value;
+  if (!checkin) return null;
+
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+
+  const checkinDate = new Date(checkin);
+  checkinDate.setHours(0, 0, 0, 0);
+
+  return checkinDate < hoy
+    ? { checkinEnPasado: true }
+    : null;
+}
