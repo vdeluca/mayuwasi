@@ -54,22 +54,26 @@ export class ReservaFormComponent implements OnInit {
   apiUrl = environment.url_base_api;
   espacioSeleccionado?: Espacio;
 
-  form = this.fb.group({
-    nombre: ['', Validators.required],
-    pax: [1, [Validators.required, Validators.min(1)]],
-    checkin: [null as Date | null, Validators.required],
-    checkout: [null as Date | null, Validators.required],
-    telefono: [''],
-    email: ['', Validators.email],
-    observaciones: [''],
-    deposito: [0],
-    total: [0],
-    codigo_operacion: [''],
-    estado: ['Solicitado'],
-    espacio: [''],
-    servicio: [''],
-  });
-
+  form = this.fb.group(
+    {
+      nombre: ['', Validators.required],
+      pax: [1, [Validators.required, Validators.min(1)]],
+      checkin: [null as Date | null, Validators.required],
+      checkout: [null as Date | null, Validators.required],
+      telefono: [''],
+      email: ['', Validators.email],
+      observaciones: [''],
+      deposito: [0],
+      total: [0],
+      codigo_operacion: [''],
+      estado: ['Solicitado'],
+      espacio: [''],
+      servicio: [''],
+    },
+    {
+      validators: rangoFechasValidator
+    }
+  );
   ngOnInit(): void {
     const espacioUuid = this.route.snapshot.paramMap.get('espacioUuid');
     if (!espacioUuid) {
@@ -198,21 +202,26 @@ export class ReservaFormComponent implements OnInit {
   }
 
   private cotizarDesdeFormulario(): void {
+    if (this.form.invalid) {
+      this.cotizacion = undefined;
+      return;
+    }
+  
     const { checkin, checkout, pax } = this.form.value;
     const tipoEspacioId = this.espacioSeleccionado?.tipo_espacio?.id;
-
+  
     if (!checkin || !checkout || !pax || !tipoEspacioId) {
       this.cotizacion = undefined;
       return;
     }
-
+  
     const payload: CotizarReservaRequest = {
       id: Number(tipoEspacioId),
       checkin: this.toISODate(checkin),
       checkout: this.toISODate(checkout),
       pax,
     };
-
+  
     this.cotizando = true;
     this.cotizacionService
       .cotizarReserva(payload)
@@ -227,4 +236,40 @@ export class ReservaFormComponent implements OnInit {
         },
       });
   }
+  
+}
+
+
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+
+function rangoFechasValidator(control: AbstractControl): ValidationErrors | null {
+  const checkinCtrl = control.get('checkin');
+  const checkoutCtrl = control.get('checkout');
+
+  if (!checkinCtrl || !checkoutCtrl) {
+    return null;
+  }
+
+  const checkin = checkinCtrl.value;
+  const checkout = checkoutCtrl.value;
+
+  if (!checkin || !checkout) {
+    checkoutCtrl.setErrors(null);
+    return null;
+  }
+
+  const fechaCheckin = new Date(checkin);
+  const fechaCheckout = new Date(checkout);
+
+  if (fechaCheckin < fechaCheckout) {
+    // limpiamos solo nuestro error
+    if (checkoutCtrl.hasError('rangoFechasInvalido')) {
+      checkoutCtrl.setErrors(null);
+    }
+    return null;
+  }
+
+  // 👇 acá está la magia
+  checkoutCtrl.setErrors({ rangoFechasInvalido: true });
+  return { rangoFechasInvalido: true };
 }

@@ -76,7 +76,9 @@
   </div>
 
 </form>
-
+<mat-error *ngIf="form.hasError('rangoFechasInvalido')">
+  La fecha de salida debe ser posterior a la de ingreso
+</mat-error>
   <section
     *ngIf="tiposAgrupados.length > 0"
     class="resultados"

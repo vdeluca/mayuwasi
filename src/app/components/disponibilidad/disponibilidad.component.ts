@@ -55,11 +55,14 @@ export class DisponibilidadComponent implements OnInit {
     private dispobilidadService: DisponibilidadService) {}
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      checkin: [null, Validators.required],
-      checkout: [null, Validators.required],
-      pax: [2, [Validators.required, Validators.min(1)]],
-    });
+    this.form = this.fb.group(
+      {
+        checkin: [null, Validators.required],
+        checkout: [null, Validators.required],
+        pax: [2, [Validators.required, Validators.min(1)]],
+      },
+      { validators: rangoFechasValidator }
+    );
 
     this.form.valueChanges
       .pipe(
@@ -189,5 +192,18 @@ export class DisponibilidadComponent implements OnInit {
   
 }
 
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
+export function rangoFechasValidator(
+  control: AbstractControl
+): ValidationErrors | null {
+  const checkin = control.get('checkin')?.value;
+  const checkout = control.get('checkout')?.value;
+
+  if (!checkin || !checkout) return null;
+
+  return checkin < checkout
+    ? null
+    : { rangoFechasInvalido: true };
+}
 
