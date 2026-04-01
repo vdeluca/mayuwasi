@@ -77,6 +77,10 @@
       <mat-form-field appearance="outline">
         <mat-label>Teléfono (Área sin 0 + Número)</mat-label>
         <input matInput formControlName="telefono" />
+      
+        <mat-error *ngIf="form.get('telefono')?.hasError('pattern')">
+          Ingresá área sin 0 + número. Ej: 1123456789
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
