@@ -106,6 +106,7 @@ export class ReservaFormComponent implements OnInit {
     this.espaciosService.getEspacio(espacioUuid).subscribe(espacio => {
       this.espacioSeleccionado = espacio;
       this.cotizarDesdeFormulario();
+      //console.log('Espacio seleccionado:', espacio);
     });
 
     const checkinControl = this.form.get('checkin');
