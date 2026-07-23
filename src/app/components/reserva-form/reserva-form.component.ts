@@ -21,6 +21,8 @@ import { CotizacionService } from '../../services/cotizacion.service';
 import { EspaciosService } from '../../services/espacios.service';
 import { ReservasService } from '../../services/reservas.service';
 
+const telefonoValidator = Validators.pattern(/^[1-9][0-9]{9,10}$/);
+
 @Component({
   selector: 'app-reserva-form',
   standalone: true,
@@ -63,7 +65,7 @@ export class ReservaFormComponent implements OnInit {
       pax: [1, [Validators.required, Validators.min(1)]],
       checkin: [null as Date | null, Validators.required],
       checkout: [null as Date | null, Validators.required],
-      telefono: [''],
+      telefono: ['', telefonoValidator],
       email: ['', Validators.email],
       observaciones: [''],
       deposito: [0],
@@ -104,6 +106,7 @@ export class ReservaFormComponent implements OnInit {
     this.espaciosService.getEspacio(espacioUuid).subscribe(espacio => {
       this.espacioSeleccionado = espacio;
       this.cotizarDesdeFormulario();
+      //console.log('Espacio seleccionado:', espacio);
     });
 
     const checkinControl = this.form.get('checkin');
